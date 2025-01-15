@@ -114,7 +114,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
         <Label htmlFor="jurusan">Jurusan</Label>
         <Input id="jurusan" value={jurusan} onChange={(e) => setJurusan(e.target.value)} />
       </div>
-      <Button type="submit">Add Employee</Button>
+      <Button type="submit">Tambah Data</Button>
     </form>
   )
 }

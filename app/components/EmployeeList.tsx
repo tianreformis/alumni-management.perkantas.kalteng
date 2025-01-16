@@ -118,11 +118,11 @@ export default function EmployeeList() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead>Nama</TableHead>
             <TableHead className='hidden md:table-cell'>Email</TableHead>
             <TableHead className='hidden md:table-cell'>Komponen</TableHead>
             <TableHead className='hidden md:table-cell'>Jurusan</TableHead>
-            <TableHead>Actions</TableHead>            
+            <TableHead>Aksi</TableHead>            
             
           </TableRow>
         </TableHeader>

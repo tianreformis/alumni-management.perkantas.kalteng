@@ -15,6 +15,7 @@ interface Employee {
   kampus?: 'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER'
   otherKampus?: string
   jurusan?: string
+  angkatan?:number
 }
 
 interface AddEmployeeFormProps {
@@ -29,6 +30,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
   const [kampus, setKampus] = useState<'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER' | ''>('')
   const [otherKampus, setOtherKampus] = useState('')
   const [jurusan, setJurusan] = useState('')
+  const [angkatan, setAngkatan] = useState(0)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,7 +44,8 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
         image: image || undefined,
         kampus: kampus || undefined,
         otherKampus: kampus === 'OTHER' ? otherKampus : undefined,
-        jurusan: jurusan || undefined
+        jurusan: jurusan || undefined,
+        angkatan
       }),
     })
     if (response.ok) {
@@ -55,6 +58,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
       setKampus('')
       setOtherKampus('')
       setJurusan('')
+      setAngkatan(0)
       window.location.reload() 
     } else {
       console.error('Failed to add employee')
@@ -113,6 +117,10 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
       <div>
         <Label htmlFor="jurusan">Jurusan</Label>
         <Input id="jurusan" value={jurusan} onChange={(e) => setJurusan(e.target.value)} />
+      </div>
+      <div>
+        <Label htmlFor="angkatan">Angkatan</Label>
+        <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
       </div>
       <Button type="submit">Tambah Data</Button>
     </form>

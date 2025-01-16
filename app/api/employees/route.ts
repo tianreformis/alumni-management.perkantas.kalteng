@@ -19,6 +19,7 @@ export async function POST(request: Request) {
       kampus: body.kampus,
       otherKampus: body.kampus === 'OTHER' ? body.otherKampus : undefined,
       jurusan: body.jurusan,
+      angkatan: body.angkatan
     },
   })
   return NextResponse.json(employee)

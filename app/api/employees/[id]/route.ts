@@ -25,6 +25,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       kampus: body.kampus,
       otherKampus: body.kampus === 'OTHER' ? body.otherKampus : undefined,
       jurusan: body.jurusan,
+      angkatan: body.angkatan
     },
   })
   return NextResponse.json(employee)

@@ -16,6 +16,7 @@ import {
 import { toast } from 'react-toastify';
 
 import Modal from 'react-modal';
+import { DeleteIcon } from 'lucide-react'
 
 // Add this at the top of your file
 const customStyles = {
@@ -34,9 +35,9 @@ interface Employee {
   id: string
   name: string
   email: string
-
   position: "ALUMNI" | "SISWA" | "MAHASISWA" | undefined
-  jurusan : string
+  jurusan: string
+  angkatan: number
 }
 
 export default function EmployeeList() {
@@ -95,13 +96,15 @@ export default function EmployeeList() {
       printWindow.document.write(`
       <html>
         <head>
-          <title>Employee Data</title>
+          <title>Alumni Perkantas Kalteng</title>
         </head>
         <body>
-          <h1>Employee Data</h1>
-          <p>Name: ${data.name}</p>
+          <h1>Alumni Data</h1>
+          <p>Nama: ${data.name}</p>
           <p>Email: ${data.email}</p>
-          <p>Position: ${data.position}</p>
+          <p>Komponen: ${data.position}</p>
+          <p>Jurusan: ${data.jurusan}</p>
+          <p>Angkatan: ${data.Angkatan}</p>
         </body>
       </html>
     `);
@@ -122,8 +125,9 @@ export default function EmployeeList() {
             <TableHead className='hidden md:table-cell'>Email</TableHead>
             <TableHead className='hidden md:table-cell'>Komponen</TableHead>
             <TableHead className='hidden md:table-cell'>Jurusan</TableHead>
-            <TableHead>Aksi</TableHead>            
-            
+            <TableHead className='hidden md:table-cell'>Angkatan</TableHead>
+            <TableHead>Aksi</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -133,20 +137,22 @@ export default function EmployeeList() {
               <TableCell className='hidden md:table-cell'>{employee.email}</TableCell>
               <TableCell className='hidden md:table-cell'>{employee.position}</TableCell>
               <TableCell className='hidden md:table-cell'>{employee.jurusan}</TableCell>
+
+              <TableCell className='hidden md:table-cell'>{employee.angkatan}</TableCell>
               <TableCell className='md:flex md:gap-2 '>
                 <Button onClick={() => setEditingEmployee(employee)}>Edit</Button>
                 <Button variant="outline" onClick={() => handlePrint(employee.id)}>Print</Button>
-                <Button variant="destructive" onClick={() => handleOpenDeleteModal(employee)}>Delete</Button>
+                <Button variant="destructive" onClick={() => handleOpenDeleteModal(employee)}><DeleteIcon size={16} /></Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       {editingEmployee && (
-        <EditEmployeeForm 
-          employee={editingEmployee} 
-          onClose={() => setEditingEmployee(null)} 
-          onUpdate={fetchEmployees} 
+        <EditEmployeeForm
+          employee={editingEmployee}
+          onClose={() => setEditingEmployee(null)}
+          onUpdate={fetchEmployees}
         />
       )}
       <Modal
@@ -154,13 +160,13 @@ export default function EmployeeList() {
         onRequestClose={handleCloseDeleteModal}
         style={customStyles}
         ariaHideApp={false}
-        
+
       >
         <h2 className='text-lg font-bold my-2'>Konfirmasi Hapus</h2>
         <p className='my-2'>Apakah ingin menghapus data <b>{employeeToDelete?.name}?</b></p>
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={handleCloseDeleteModal}>Cancel</Button>
-          <Button variant="destructive" onClick={handleConfirmDelete}>Delete</Button>
+          <Button variant="outline" onClick={handleCloseDeleteModal}>Batal</Button>
+          <Button variant="destructive" onClick={handleConfirmDelete}>Hapus</Button>
         </div>
       </Modal>
     </div>

@@ -16,6 +16,7 @@ interface Employee {
   kampus?: 'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER'
   otherKampus?: string
   jurusan?: string
+  angkatan?: number | 0
 }
 
 interface EditEmployeeFormProps {
@@ -32,20 +33,22 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
   const [kampus, setKampus] = useState<'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER' | ''>(employee.kampus || '')
   const [otherKampus, setOtherKampus] = useState(employee.otherKampus || '')
   const [jurusan, setJurusan] = useState(employee.jurusan || '')
+  const [angkatan, setAngkatan] = useState(employee.angkatan || 0)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const response = await fetch(`/api/employees/${employee.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        name, 
-        email, 
+      body: JSON.stringify({
+        name,
+        email,
         position: position || undefined,
         image: image || undefined,
         kampus: kampus || undefined,
         otherKampus: kampus === 'OTHER' ? otherKampus : undefined,
-        jurusan: jurusan || undefined
+        jurusan: jurusan || undefined,
+        angkatan
       }),
     })
     if (response.ok) {
@@ -114,6 +117,10 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
           <div>
             <Label htmlFor="edit-jurusan">Jurusan</Label>
             <Input id="edit-jurusan" value={jurusan} onChange={(e) => setJurusan(e.target.value)} />
+          </div>
+          <div>
+            <Label htmlFor="angkatan">Angkatan</Label>
+            <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
           </div>
           <div className="flex justify-end space-x-2">
             <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>

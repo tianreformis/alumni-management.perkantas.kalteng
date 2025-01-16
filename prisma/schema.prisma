@@ -31,5 +31,6 @@ model Employee {
   jurusan   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  angkatan  Int
 }
 

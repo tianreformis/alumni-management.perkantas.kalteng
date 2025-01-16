@@ -26,6 +26,12 @@ export default function Dashboard() {
         setEmployees(data)
     }
 
+    const totalAll = employees.length
+
+    const totalAlumni = employees.filter(employee => employee.position === 'ALUMNI').length
+    const totalMahasiswa = employees.filter(employee => employee.position === 'MAHASISWA').length
+    const totalSiswa = employees.filter(employee => employee.position === 'SISWA').length   
+
     return (
         <div className="flex-1 overflow-y-auto">
             <Header />
@@ -37,7 +43,7 @@ export default function Dashboard() {
                             <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">1,234</div>
+                            <div className="text-2xl font-bold">{totalAll}</div>
                         </CardContent>
                     </Card>
                     <Card>
@@ -46,7 +52,7 @@ export default function Dashboard() {
                             <UserPlus className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">45</div>
+                            <div className="text-2xl font-bold">{totalAlumni}</div>
                         </CardContent>
                     </Card>
                     <Card>
@@ -55,7 +61,7 @@ export default function Dashboard() {
                             <UserPlus className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">45</div>
+                            <div className="text-2xl font-bold">{totalMahasiswa}</div>
                         </CardContent>
                     </Card>
                     <Card>
@@ -64,7 +70,7 @@ export default function Dashboard() {
                             <UserPlus className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">45</div>
+                            <div className="text-2xl font-bold">{totalSiswa}</div>
                         </CardContent>
                     </Card>
 

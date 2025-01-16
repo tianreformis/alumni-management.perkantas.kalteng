@@ -16,7 +16,7 @@ import {
 import { toast } from 'react-toastify';
 
 import Modal from 'react-modal';
-import { DeleteIcon } from 'lucide-react'
+import { DeleteIcon, Edit, Edit2Icon, LucidePrinter, PrinterIcon } from 'lucide-react'
 
 // Add this at the top of your file
 const customStyles = {
@@ -140,9 +140,9 @@ export default function EmployeeList() {
 
               <TableCell className='hidden md:table-cell'>{employee.angkatan}</TableCell>
               <TableCell className='md:flex md:gap-2 '>
-                <Button onClick={() => setEditingEmployee(employee)}>Edit</Button>
-                <Button variant="outline" onClick={() => handlePrint(employee.id)}>Print</Button>
-                <Button variant="destructive" onClick={() => handleOpenDeleteModal(employee)}><DeleteIcon size={16} /></Button>
+                <Button onClick={() => setEditingEmployee(employee)}><Edit2Icon size={20} /></Button>
+                <Button variant="outline" onClick={() => handlePrint(employee.id)}><PrinterIcon size={20} /></Button>
+                <Button variant="destructive" onClick={() => handleOpenDeleteModal(employee)}><DeleteIcon size={20} /></Button>
               </TableCell>
             </TableRow>
           ))}

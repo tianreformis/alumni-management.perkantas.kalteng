@@ -25,11 +25,12 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       kampus: body.kampus,
       otherKampus: body.kampus === 'OTHER' ? body.otherKampus : undefined,
       jurusan: body.jurusan,
-      angkatan: body.angkatan
+      angkatan: body.angkatan as number,
     },
   })
   return NextResponse.json(employee)
 }
+
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   await prisma.employee.delete({

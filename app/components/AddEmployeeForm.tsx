@@ -30,7 +30,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
   const [kampus, setKampus] = useState<'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER' | ''>('')
   const [otherKampus, setOtherKampus] = useState('')
   const [jurusan, setJurusan] = useState('')
-  const [angkatan, setAngkatan] = useState(0)
+  const [angkatan, setAngkatan] = useState(2000)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -58,7 +58,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
       setKampus('')
       setOtherKampus('')
       setJurusan('')
-      setAngkatan(0)
+      setAngkatan(2000)
       window.location.reload() 
     } else {
       console.error('Failed to add employee')

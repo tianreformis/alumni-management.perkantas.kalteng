@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Header } from "@/app/components/Header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Users, UserPlus, UserMinus, DollarSign } from 'lucide-react'
+import { Users, UserPlus, ArrowBigLeft,ArrowBigRightDash } from 'lucide-react'
 
 interface Employee {
     id: string
@@ -14,14 +14,18 @@ interface Employee {
     jurusan: string
     angkatan: number
 }
+
 export default function Dashboard() {
     const [employees, setEmployees] = useState<Employee[]>([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 5 // Number of items per page
+
     useEffect(() => {
         fetchEmployees()
     }, [])
 
     const fetchEmployees = async () => {
-        const response = await fetch('/api/employees')
+        const response = await fetch(`/api/employees`)
         const data = await response.json()
         setEmployees(data)
     }
@@ -31,6 +35,18 @@ export default function Dashboard() {
     const totalAlumni = employees.filter(employee => employee.position === 'ALUMNI').length
     const totalMahasiswa = employees.filter(employee => employee.position === 'MAHASISWA').length
     const totalSiswa = employees.filter(employee => employee.position === 'SISWA').length   
+
+    // Pagination logic
+    const totalPages = Math.ceil(employees.length / itemsPerPage)
+    const currentEmployees = employees.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1)
+    }
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1)
+    }
 
     return (
         <div className="flex-1 overflow-y-auto">
@@ -73,8 +89,6 @@ export default function Dashboard() {
                             <div className="text-2xl font-bold">{totalSiswa}</div>
                         </CardContent>
                     </Card>
-
-
                 </div>
                 <Card>
                     <CardHeader>
@@ -88,11 +102,10 @@ export default function Dashboard() {
                                     <TableHead className='hidden md:table-cell'>Komponen</TableHead>
                                     <TableHead className='hidden md:table-cell'>Jurusan</TableHead>
                                     <TableHead className='hidden md:table-cell'>Angkatan</TableHead>
-
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {employees.map((employee) => (
+                                {currentEmployees.map((employee) => (
                                     <TableRow key={employee.id}>
                                         <TableCell>{employee.name}</TableCell>
                                         <TableCell className='hidden md:table-cell'>{employee.position}</TableCell>
@@ -102,10 +115,29 @@ export default function Dashboard() {
                                 ))}
                             </TableBody>
                         </Table>
+                        <div className="flex justify-between items-center mt-4">
+                            <button 
+                                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                                onClick={handlePrevPage}
+                                disabled={currentPage === 1}
+                            >
+                                <ArrowBigLeft />
+                                
+                            </button>
+                            <span className="text-sm text-gray-600">
+                                Halaman {currentPage} Dari {totalPages}
+                            </span>
+                            <button 
+                                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                                onClick={handleNextPage}
+                                disabled={currentPage === totalPages}
+                            >
+                                <ArrowBigRightDash />
+                            </button>
+                        </div>
                     </CardContent>
                 </Card>
             </main>
         </div>
     )
 }
-

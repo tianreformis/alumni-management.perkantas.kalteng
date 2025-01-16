@@ -32,5 +32,6 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   angkatan  Int
+  birthDay String?
 }
 

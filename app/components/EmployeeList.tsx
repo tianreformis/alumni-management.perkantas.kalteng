@@ -38,6 +38,7 @@ interface Employee {
   position: "ALUMNI" | "SISWA" | "MAHASISWA" | undefined
   jurusan: string
   angkatan: number
+  birthDay : string
 }
 
 export default function EmployeeList() {
@@ -45,6 +46,7 @@ export default function EmployeeList() {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(null);
+
 
   const handleOpenDeleteModal = (employee: Employee) => {
     setEmployeeToDelete(employee);
@@ -136,6 +138,7 @@ export default function EmployeeList() {
             <TableHead className='hidden md:table-cell'>Komponen</TableHead>
             <TableHead className='hidden md:table-cell'>Jurusan</TableHead>
             <TableHead className='hidden md:table-cell'>Angkatan</TableHead>
+<TableHead className='hidden md:table-cell'>Tanggal Lahir</TableHead>
             <TableHead>Aksi</TableHead>
 
           </TableRow>
@@ -149,6 +152,7 @@ export default function EmployeeList() {
               <TableCell className='hidden md:table-cell'>{employee.jurusan}</TableCell>
 
               <TableCell className='hidden md:table-cell'>{employee.angkatan}</TableCell>
+              <TableCell className='hidden md:table-cell'>{employee.birthDay}</TableCell>
               <TableCell className='md:flex md:gap-2 '>
                 <Button onClick={() => setEditingEmployee(employee)}><Edit2Icon size={20} /></Button>
                 <Button variant="outline" onClick={() => handlePrint(employee.id)}><PrinterIcon size={20} /></Button>

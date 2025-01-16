@@ -19,7 +19,8 @@ export async function POST(request: Request) {
       kampus: body.kampus,
       otherKampus: body.kampus === 'OTHER' ? body.otherKampus : undefined,
       jurusan: body.jurusan,
-      angkatan: body.angkatan
+      angkatan: body.angkatan,
+      birthDay : body.birthDay
     },
   })
   return NextResponse.json(employee)

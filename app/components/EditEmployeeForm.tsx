@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Save, X} from 'lucide-react'
+
 
 interface Employee {
   id: string
@@ -17,6 +19,8 @@ interface Employee {
   otherKampus?: string
   jurusan?: string
   angkatan?: number | 0
+  birthDay?: string
+
 }
 
 interface EditEmployeeFormProps {
@@ -34,6 +38,7 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
   const [otherKampus, setOtherKampus] = useState(employee.otherKampus || '')
   const [jurusan, setJurusan] = useState(employee.jurusan || '')
   const [angkatan, setAngkatan] = useState(employee.angkatan || 0)
+  const [birthDay, setBirthDay] = useState(employee.birthDay || '')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,7 +53,8 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
         kampus: kampus || undefined,
         otherKampus: kampus === 'OTHER' ? otherKampus : undefined,
         jurusan: jurusan || undefined,
-        angkatan
+        angkatan,
+        birthDay
       }),
     })
     if (response.ok) {
@@ -56,19 +62,19 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
       onUpdate(updatedEmployee)
       onClose()
     } else {
-      console.error('Failed to update employee')
+      console.error('Failed to update Data')
     }
   }
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className='overflow-y-scroll'>
         <DialogHeader>
-          <DialogTitle>Edit Employee</DialogTitle>
+          <DialogTitle>Edit Data</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="edit-name">Name</Label>
+            <Label htmlFor="edit-name">Nama Lengkap</Label>
             <Input id="edit-name" value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
           <div>
@@ -76,7 +82,7 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
             <Input id="edit-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div>
-            <Label htmlFor="edit-position">Position</Label>
+            <Label htmlFor="edit-position">Komponen</Label>
             <Select value={position} onValueChange={(value: 'ALUMNI' | 'SISWA' | 'MAHASISWA' | '') => setPosition(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a position" />
@@ -122,9 +128,13 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
             <Label htmlFor="angkatan">Angkatan</Label>
             <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
           </div>
+          <div>
+            <Label htmlFor="birthDay">Tanggal Lahir</Label>
+            <Input id="birthDay" type="date" value={birthDay} onChange={(e) => setBirthDay(e.target.value)} required />
+          </div>
           <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <Button type="submit">Save Changes</Button>
+            <Button type="button" variant="outline" onClick={onClose}><X size={20}/>Cancel</Button>
+            <Button type="submit"><Save size={20}/>Simpan Perubahan</Button>
           </div>
         </form>
       </DialogContent>

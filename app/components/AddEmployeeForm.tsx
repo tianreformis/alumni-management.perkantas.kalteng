@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { FileInput } from 'lucide-react'
+
 
 interface Employee {
   id: string
@@ -15,7 +17,8 @@ interface Employee {
   kampus?: 'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER'
   otherKampus?: string
   jurusan?: string
-  angkatan?:number
+  angkatan?: number
+  birthDay?: string
 }
 
 interface AddEmployeeFormProps {
@@ -31,21 +34,23 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
   const [otherKampus, setOtherKampus] = useState('')
   const [jurusan, setJurusan] = useState('')
   const [angkatan, setAngkatan] = useState(2000)
+  const [birthDay, setbirthDay] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const response = await fetch('/api/employees', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        name, 
-        email, 
+      body: JSON.stringify({
+        name,
+        email,
         position: position || undefined,
         image: image || undefined,
         kampus: kampus || undefined,
         otherKampus: kampus === 'OTHER' ? otherKampus : undefined,
         jurusan: jurusan || undefined,
-        angkatan
+        angkatan,
+        birthDay
       }),
     })
     if (response.ok) {
@@ -59,7 +64,8 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
       setOtherKampus('')
       setJurusan('')
       setAngkatan(2000)
-      window.location.reload() 
+      setbirthDay('')  // Reset birth date to current date when new employee is added to avoid errors in form validation
+      window.location.reload()
     } else {
       console.error('Failed to add employee')
     }
@@ -97,7 +103,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
         <Label htmlFor="kampus">Kampus</Label>
         <Select value={kampus} onValueChange={(value: 'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER' | '') => setKampus(value)}>
           <SelectTrigger>
-            <SelectValue placeholder="Select a kampus" />
+            <SelectValue placeholder="Piih kampus" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">None</SelectItem>
@@ -122,7 +128,11 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
         <Label htmlFor="angkatan">Angkatan</Label>
         <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
       </div>
-      <Button type="submit">Tambah Data</Button>
+      <div>
+        <Label htmlFor="birthDay">Tanggal Lahir</Label>
+        <Input id="birthDay" type="date" value={birthDay} onChange={(e) => setbirthDay(e.target.value)} required />
+      </div>
+      <Button type="submit"><FileInput size={20} />Tambah Data</Button>
     </form>
   )
 }

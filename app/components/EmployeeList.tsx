@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import EditEmployeeForm from './EditEmployeeForm'
 import {
   Table,
@@ -16,7 +15,8 @@ import {
 import { toast } from 'react-toastify';
 
 import Modal from 'react-modal';
-import { DeleteIcon, Edit, Edit2Icon, LucidePrinter, PrinterIcon } from 'lucide-react'
+import { DeleteIcon, Edit, Edit2Icon, LucidePrinter, PrinterIcon, FileText } from 'lucide-react'
+import * as XLSX from 'xlsx';
 
 // Add this at the top of your file
 const customStyles = {
@@ -74,6 +74,8 @@ export default function EmployeeList() {
     const data = await response.json()
     setEmployees(data)
   }
+  
+  const dateToday = new Date().toISOString().split('T')[0];
 
   const handleDelete = async (id: string) => {
     const confirmation = window.confirm(`Are you sure you want to delete employee with ID ${id}?`);
@@ -115,6 +117,14 @@ export default function EmployeeList() {
       console.error('Unable to open print window');
     }
   }
+
+  const handleExportToExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(employees);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Employees");
+    XLSX.writeFile(workbook, `alumni${dateToday}.xlsx`);
+    toast.success('Data exported to Excel successfully');
+  };
 
   return (
     <div>
@@ -169,6 +179,7 @@ export default function EmployeeList() {
           <Button variant="destructive" onClick={handleConfirmDelete}>Hapus</Button>
         </div>
       </Modal>
+      <Button onClick={handleExportToExcel}><FileText size={20} /> Expor ke Excel</Button>
     </div>
 
   )

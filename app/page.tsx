@@ -8,7 +8,7 @@ interface Employee {
   id: string
   name: string
   email: string
-  position: string
+  position: "ALUMNI" | "SISWA" | "MAHASISWA" | undefined
 }
 
 export default function Home() {

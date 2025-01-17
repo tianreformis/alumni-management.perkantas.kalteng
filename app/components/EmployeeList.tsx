@@ -15,7 +15,7 @@ import {
 import { toast } from 'react-toastify';
 
 import Modal from 'react-modal';
-import { DeleteIcon, Edit, Edit2Icon, LucidePrinter, PrinterIcon, FileText } from 'lucide-react'
+import { DeleteIcon, Edit, Edit2Icon, LucidePrinter, PrinterIcon, FileText, ArrowBigRight, ArrowBigLeft, FileCode } from 'lucide-react'
 import * as XLSX from 'xlsx';
 
 // Add this at the top of your file
@@ -38,7 +38,7 @@ interface Employee {
   position: "ALUMNI" | "SISWA" | "MAHASISWA" | undefined
   jurusan: string
   angkatan: number
-  birthDay : string
+  birthDay: string
 }
 
 export default function EmployeeList() {
@@ -46,6 +46,8 @@ export default function EmployeeList() {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
 
   const handleOpenDeleteModal = (employee: Employee) => {
@@ -72,12 +74,13 @@ export default function EmployeeList() {
   }, [])
 
   const fetchEmployees = async () => {
-    const response = await fetch('/api/employees')
+    const response = await fetch(`/api/employees`)
     const data = await response.json()
     setEmployees(data)
   }
-  
+
   const dateToday = new Date().toISOString().split('T')[0];
+  const timeNow = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds();
 
   const handleDelete = async (id: string) => {
     const confirmation = window.confirm(`Are you sure you want to delete employee with ID ${id}?`);
@@ -120,13 +123,30 @@ export default function EmployeeList() {
     }
   }
 
-  const handleExportToExcel = () => {
+  const handleExportCurrentToExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(currentEmployees);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Employees");
+    XLSX.writeFile(workbook, `alumniCurrent${dateToday}_${timeNow}.xlsx`);
+    toast.success('Data Sekarang Berhasil di Export');
+  };
+
+  const handleExportAllToExcel = () => {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(employees);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Employees");
-    XLSX.writeFile(workbook, `alumni${dateToday}.xlsx`);
-    toast.success('Data exported to Excel successfully');
+    XLSX.writeFile(workbook, `alumniAll${dateToday}_${timeNow}.xlsx`);
+    toast.success('Semua Data Berhasil di Export');
   };
+
+  const totalPage = Math.ceil(employees.length / itemsPerPage);
+  const currentEmployees = employees.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const handleNextPage = () => {
+    if (currentPage < totalPage) setCurrentPage(currentPage + 1)
+  }
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1)
+  }
 
   return (
     <div>
@@ -138,13 +158,13 @@ export default function EmployeeList() {
             <TableHead className='hidden md:table-cell'>Komponen</TableHead>
             <TableHead className='hidden md:table-cell'>Jurusan</TableHead>
             <TableHead className='hidden md:table-cell'>Angkatan</TableHead>
-<TableHead className='hidden md:table-cell'>Tanggal Lahir</TableHead>
+            <TableHead className='hidden md:table-cell'>Tanggal Lahir</TableHead>
             <TableHead>Aksi</TableHead>
 
           </TableRow>
         </TableHeader>
         <TableBody>
-          {employees.map((employee) => (
+          {currentEmployees.map((employee) => (
             <TableRow key={employee.id}>
               <TableCell>{employee.name}</TableCell>
               <TableCell className='hidden md:table-cell'>{employee.email}</TableCell>
@@ -162,6 +182,40 @@ export default function EmployeeList() {
           ))}
         </TableBody>
       </Table>
+      <div className='flex justify-between'>
+        <Button onClick={handleExportCurrentToExcel}><FileText size={20} />
+          <span className='hidden md:block'>
+            Export data Sekarang
+          </span>
+        </Button>
+        <Button onClick={handleExportAllToExcel}><FileCode size={20} />
+          <span className='hidden md:block'>
+            Export Semua Data
+          </span>
+        </Button>
+
+      </div>
+
+      <div className="flex justify-between items-center mt-4">
+        <button
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          <ArrowBigLeft />
+
+        </button>
+        <span className="text-sm text-gray-600">
+          Halaman {currentPage} Dari {totalPage}
+        </span>
+        <button
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPage}
+        >
+          <ArrowBigRight />
+        </button>
+      </div>
       {editingEmployee && (
         <EditEmployeeForm
           employee={editingEmployee}
@@ -183,7 +237,7 @@ export default function EmployeeList() {
           <Button variant="destructive" onClick={handleConfirmDelete}>Hapus</Button>
         </div>
       </Modal>
-      <Button onClick={handleExportToExcel}><FileText size={20} /> Expor ke Excel</Button>
+
     </div>
 
   )

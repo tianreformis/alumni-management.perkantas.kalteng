@@ -81,6 +81,7 @@ export default function EmployeeList() {
 
   const dateToday = new Date().toISOString().split('T')[0];
   const timeNow = new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds();
+  const yearNow = new Date().getFullYear();
 
   const handleDelete = async (id: string) => {
     const confirmation = window.confirm(`Are you sure you want to delete employee with ID ${id}?`);
@@ -101,19 +102,66 @@ export default function EmployeeList() {
     const printWindow = window.open('', '', 'height=500,width=800');
     if (printWindow) {
       printWindow.document.write(`
-      <html>
-        <head>
-          <title>Alumni Perkantas Kalteng</title>
-        </head>
-        <body>
-          <h1>Alumni Data</h1>
-          <p>Nama: ${data.name}</p>
-          <p>Email: ${data.email}</p>
-          <p>Komponen: ${data.position}</p>
-          <p>Jurusan: ${data.jurusan}</p>
-          <p>Angkatan: ${data.Angkatan}</p>
-        </body>
-      </html>
+      <html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Alumni Perkantas Kalteng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .data-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .data-value {
+            color: #000;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profil Alumni Perkantas Kalteng</h1>
+        <p><span class="data-label">Nama:</span> <span class="data-value">${data.name}</span></p>
+        <p><span class="data-label">Email:</span> <span class="data-value">${data.email}</span></p>
+        <p><span class="data-label">Komponen:</span> <span class="data-value">${data.position}</span></p>
+        <p><span class="data-label">Jurusan:</span> <span class="data-value">${data.jurusan}</span></p>
+        <p><span class="data-label">Angkatan:</span> <span class="data-value">${data.angkatan}</span></p>
+    </div>
+    <footer>
+        &copy; ${yearNow} Perkantas Kalteng. Semua Hak Dilindungi.
+    </footer>
+</body>
+</html>
+
     `);
       printWindow.document.close();
       printWindow.print();

@@ -20,6 +20,14 @@ enum Kampus {
   OTHER
 }
 
+enum Pelayanan {
+  MAHASISWA
+  SISWA 
+  ALUMNI
+  BPP
+  OTHER
+}
+
 model Employee {
   id        String   @id @default(cuid())
   name      String
@@ -32,6 +40,8 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   angkatan  Int
-  birthDay String?
+  birthDay String?      
+  pelayanan Pelayanan?
+  otherPelayanan String? 
 }
 

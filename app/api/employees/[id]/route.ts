@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { Pelayanan, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -26,7 +26,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       otherKampus: body.kampus === 'OTHER' ? body.otherKampus : undefined,
       jurusan: body.jurusan,
       angkatan: body.angkatan as number,
-      birthDay: body.birthDay
+      birthDay: body.birthDay,
+      pelayanan : body.pelayanan,
+      otherPelayanan: body.pelayanan === 'OTHER' ? body.otherPelayanan : undefined,
     },
   })
   return NextResponse.json(employee)

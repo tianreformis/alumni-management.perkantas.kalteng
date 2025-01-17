@@ -20,6 +20,8 @@ interface Employee {
   jurusan?: string
   angkatan?: number | 0
   birthDay?: string
+  pelayanan?: 'BPP' | 'SISWA' | 'MAHASISWA' | 'ALUMNI' | 'OTHER'
+  otherPelayanan?: string
 
 }
 
@@ -39,6 +41,8 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
   const [jurusan, setJurusan] = useState(employee.jurusan || '')
   const [angkatan, setAngkatan] = useState(employee.angkatan || 0)
   const [birthDay, setBirthDay] = useState(employee.birthDay || '')
+  const [pelayanan, setPelayanan] = useState<'BPP' | 'SISWA' | 'MAHASISWA' | 'ALUMNI' | 'OTHER' | ''>(employee.pelayanan || '')
+  const [otherPelayanan, setOtherPelayanan] = useState(employee.otherPelayanan || '')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,7 +58,9 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
         otherKampus: kampus === 'OTHER' ? otherKampus : undefined,
         jurusan: jurusan || undefined,
         angkatan,
-        birthDay
+        birthDay,
+        pelayanan: pelayanan || undefined,
+        otherPelayanan: pelayanan === 'OTHER'? otherPelayanan : undefined,
       }),
     })
     if (response.ok) {
@@ -99,6 +105,7 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
             <Label htmlFor="edit-image">Image URL</Label>
             <Input id="edit-image" value={image} onChange={(e) => setImage(e.target.value)} />
           </div>
+
           <div>
             <Label htmlFor="edit-kampus">Kampus</Label>
             <Select value={kampus} onValueChange={(value: 'UPR' | 'MUHAMMADIYAH' | 'UNKRIP' | 'OTHER' | '') => setKampus(value)}>
@@ -120,6 +127,8 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
               <Input id="edit-otherKampus" value={otherKampus} onChange={(e) => setOtherKampus(e.target.value)} required />
             </div>
           )}
+
+          
           <div>
             <Label htmlFor="edit-jurusan">Jurusan</Label>
             <Input id="edit-jurusan" value={jurusan} onChange={(e) => setJurusan(e.target.value)} />
@@ -129,6 +138,30 @@ export default function EditEmployeeForm({ employee, onClose, onUpdate }: EditEm
             <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
           </div>
           <div>
+
+          <div>
+            <Label htmlFor="edit-pelayanan">Pelayanan</Label>
+            <Select value={pelayanan} onValueChange={(value: 'SISWA' | 'MAHASISWA' | 'ALUMNI' | 'BPP' |'OTHER' |'') => setPelayanan(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Pilih Pelayanan" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None</SelectItem>
+                <SelectItem value="SISWA">SISWA</SelectItem>
+                <SelectItem value="MAHASISWA">MAHASISWA</SelectItem>
+                <SelectItem value="ALUMNI">ALUMNI</SelectItem>                
+                <SelectItem value="BPP">BPP</SelectItem>
+                <SelectItem value="OTHER">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {pelayanan === 'OTHER' && (
+            <div>
+              <Label htmlFor="edit-otherPelayanan">Pelayanan Lain</Label>
+              <Input id="edit-otherPelayanan" value={otherPelayanan} onChange={(e) => setOtherPelayanan(e.target.value)} required />
+            </div>
+          )}
+
             <Label htmlFor="birthDay">Tanggal Lahir</Label>
             <Input id="birthDay" type="date" value={birthDay} onChange={(e) => setBirthDay(e.target.value)} required />
           </div>

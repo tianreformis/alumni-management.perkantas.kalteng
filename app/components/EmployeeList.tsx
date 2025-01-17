@@ -39,6 +39,7 @@ interface Employee {
   jurusan: string
   angkatan: number
   birthDay: string
+  pelayanan : "BPP" | "SISWA" | "MAHASISWA" | "ALUMNI" | undefined
 }
 
 export default function EmployeeList() {
@@ -153,8 +154,10 @@ export default function EmployeeList() {
         <p><span class="data-label">Nama:</span> <span class="data-value">${data.name}</span></p>
         <p><span class="data-label">Email:</span> <span class="data-value">${data.email}</span></p>
         <p><span class="data-label">Komponen:</span> <span class="data-value">${data.position}</span></p>
+                <p><span class="data-label">Kampus:</span> <span class="data-value">${data.Kampus}</span></p>
         <p><span class="data-label">Jurusan:</span> <span class="data-value">${data.jurusan}</span></p>
         <p><span class="data-label">Angkatan:</span> <span class="data-value">${data.angkatan}</span></p>
+        <p><span class="data-label">Pelayanan:</span> <span class="data-value">${data.pelayanan}</span></p>
     </div>
     <footer>
         &copy; ${yearNow} Perkantas Kalteng. Semua Hak Dilindungi.

@@ -20,7 +20,9 @@ export async function POST(request: Request) {
       otherKampus: body.kampus === 'OTHER' ? body.otherKampus : undefined,
       jurusan: body.jurusan,
       angkatan: body.angkatan,
-      birthDay : body.birthDay
+      birthDay : body.birthDay,
+      pelayanan: body.pelayanan,
+      otherPelayanan: body.pelayanan === 'OTHER' ? body.otherPelayanan : undefined,
     },
   })
   return NextResponse.json(employee)

@@ -20,6 +20,7 @@ interface Employee {
   angkatan?: number
   birthDay?: string
   pelayanan?: 'BPP' | 'SISWA' | 'MAHASISWA' | 'ALUMNI' | 'OTHER'
+  alamat?: string
 }
 
 interface AddEmployeeFormProps {
@@ -38,6 +39,7 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
   const [birthDay, setbirthDay] = useState('')
   const [pelayanan, setPelayanan] = useState<'BPP' | 'SISWA' | 'MAHASISWA' | 'ALUMNI' | 'OTHER' | ''>('')
   const [otherPelayanan, setOtherPelayanan] = useState('')
+  const [alamat, setAlamat] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,7 +58,8 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
         birthDay,
         pelayanan: pelayanan || undefined,
         otherPelayanan: pelayanan === 'OTHER' ? otherPelayanan : undefined,  // Optional field for additional data to// Optional field for additional data to
-        
+        alamat, // Optional field for additional data to
+
       }),
     })
     if (response.ok) {
@@ -70,9 +73,10 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
       setOtherKampus('')
       setJurusan('')
       setAngkatan(2000)
-      setbirthDay('')  
+      setbirthDay('')
       setPelayanan('')
       setOtherPelayanan('')
+      setAlamat('')
       // Reset birth date to current date when new employee is added to avoid errors in form validation
       window.location.reload()
     } else {
@@ -130,6 +134,15 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
         </div>
       )}
 
+
+      <div>
+        <Label htmlFor="jurusan">Jurusan</Label>
+        <Input id="jurusan" value={jurusan} onChange={(e) => setJurusan(e.target.value)} />
+      </div>
+      <div>
+        <Label htmlFor="angkatan">Angkatan</Label>
+        <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
+      </div>
       <div>
         <Label htmlFor="pelayanan">Pelayanan</Label>
         <Select value={pelayanan} onValueChange={(value: 'BPP' | 'SISWA' | 'MAHASISWA' | 'ALUMNI' | 'OTHER' | '') => setPelayanan(value)}>
@@ -152,15 +165,14 @@ export default function AddEmployeeForm({ onAddEmployee }: AddEmployeeFormProps)
           <Input id="otherPelayanan" value={otherPelayanan} onChange={(e) => setOtherPelayanan(e.target.value)} required />
         </div>
       )}
-      
+
       <div>
-        <Label htmlFor="jurusan">Jurusan</Label>
-        <Input id="jurusan" value={jurusan} onChange={(e) => setJurusan(e.target.value)} />
+        <Label htmlFor="alamat">Alamat</Label>
+        <Input id="alamat" value={alamat}  onChange={(e) => setAlamat(e.target.value)}
+          className='h-20 text-wrap'
+        />
       </div>
-      <div>
-        <Label htmlFor="angkatan">Angkatan</Label>
-        <Input id="angkatan" type="number" value={angkatan} onChange={(e) => setAngkatan(e.target.valueAsNumber)} required />
-      </div>
+
       <div>
         <Label htmlFor="birthDay">Tanggal Lahir</Label>
         <Input id="birthDay" type="date" value={birthDay} onChange={(e) => setbirthDay(e.target.value)} required />

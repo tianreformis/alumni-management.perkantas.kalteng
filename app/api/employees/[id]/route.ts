@@ -29,6 +29,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       birthDay: body.birthDay,
       pelayanan : body.pelayanan,
       otherPelayanan: body.pelayanan === 'OTHER' ? body.otherPelayanan : undefined,
+      alamat : body.alamat
     },
   })
   return NextResponse.json(employee)
